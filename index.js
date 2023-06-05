@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const {initDB,disconnectDB} = require('./config/dbConnect');
+initDB();
 require('dotenv').config();
 const port = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: true }));
