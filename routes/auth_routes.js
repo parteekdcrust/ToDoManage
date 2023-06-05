@@ -6,7 +6,7 @@ router.route('/signup').post(signup);
 router.route('/email-otp-verification').post(verifyOtpByEmail);
 router.route('/forgot-password').post(forgotPassword);
 router.route('/reset-password').post(resetPassword);
-router.route('/change-password').post(changePassword);
+router.route('/change-password').post(verifyToken,changePassword);
 
 router.route('/login').post(login);
 router.route('/logout').post(verifyToken,logout);

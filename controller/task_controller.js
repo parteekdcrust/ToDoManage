@@ -7,21 +7,15 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 exports.createTask = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      priority,
-      dueDate,
-      createdBy,
-      assignee
-    } = req.body;
+    const { title, description, priority, dueDate, createdBy, assignee } =
+      req.body;
     const task = new Task({
       title,
       description,
       priority,
       dueDate,
       createdBy,
-      assignee
+      assignee,
     });
 
     const _id = await taskService.createTask(task);
@@ -92,7 +86,7 @@ exports.assignTask = async (req, res) => {
     const task = await taskService.getTask(id);
     console.log(assigneeEmail);
     const result = await taskService.assignTask(id, assigneeEmail);
-    
+
     //sending notification via email to assignee about task assignmnent
     const transporter = nodemailer.createTransport({
       // connect with the smtp
@@ -113,6 +107,23 @@ exports.assignTask = async (req, res) => {
     res.status(200).json({
       message: "Task assigned successfully",
     });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+exports.changeStatus = async(req, res) => {
+  try {
+    const id = req.params.id;
+    const user = req.loggedInUser;
+    const status = req.body.status;
+    const result =  await taskService.changeStatus(id,user,status);
+    res.status(200).json({
+        message: "Task Status changed successfully"
+    })
   } catch (error) {
     console.log(error);
     res.status(400).json({
