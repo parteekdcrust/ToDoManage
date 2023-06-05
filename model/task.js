@@ -49,7 +49,8 @@ const TaskSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        required: true
+        required: true,
+        default:"ToDo"
     }
     
 });

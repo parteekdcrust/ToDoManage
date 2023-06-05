@@ -5,6 +5,7 @@ const authService = require("../services/auth_service");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const otpGenerator = require("otp-generator");
+require('dotenv').config();
 
 const generateOtp = () => {
   const OTP = otpGenerator.generate(6, {
