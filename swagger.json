@@ -6,7 +6,7 @@
         "description": "ToDo Manager Web app API"
     },
     "servers": [{
-        "url": "http://localhost:3000/api",
+        "url": "https://localhost:3000/api",
         "description": "ToDo Manager"
     }],
     "tags": [
@@ -249,7 +249,313 @@
                     }
                 }
             }
+        },
+        "/task": {
+            "post": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["Task"],
+                "summary": "create task",
+                "description": "create task",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/Task"
+                            }
+                        }
+                    }
+                },
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "Task created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/LogoutResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in creating task",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "task/": {
+            "get": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["Task"],
+                "summary": "get all tasks",
+                "description": "get all tasks",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Task created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/AllTaskResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in fetching tasks",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "task/{id}": {
+            "get": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["Task"],
+                "summary": "get all tasks",
+                "description": "get all tasks",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id of task to be fetched",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Task fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Task"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in fetching tasks",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["Task"],
+                "summary": "delete tasks",
+                "description": "delete tasks",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id of task to be fetched",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Task fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/LogoutResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in fetching tasks",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/task/assign/{id}": {
+            "post": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["Task"],
+                "summary": "assign task",
+                "description": "assign task",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/AssignTask"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id of task to be assigned",
+                        "type": "string"
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Task created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/LogoutResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in creating task",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/task/status/{id}": {
+            "post": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["Task"],
+                "summary": "change status of task",
+                "description": "change status of task",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/TaskStatus"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id of task to change status",
+                        "type": "string"
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Task status changed successfully",
+                        "schema": {
+                            "$ref": "#/definitions/LogoutResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in changing status of task",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/user/": {
+            "get": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["User"],
+                "summary": "get all users",
+                "description": "get all users",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Allusers fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/AllUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in fetching users",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/user/{id}": {
+            "get": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["User"],
+                "summary": "get a user",
+                "description": "get a user",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id of user to be fetched",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in fetching user",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [{
+                    "bearerAuth": []
+                }],
+                "tags": ["User"],
+                "summary": "delete user",
+                "description": "delete user",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id of user to be delete",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/LogoutResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in deleting user",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
         }
+
     },
     "components": {
         "securitySchemes": {
@@ -280,6 +586,12 @@
                 }
             }
         },
+        "AllUserResponse": {
+            "type": "array",
+            "properties": {
+                "$ref": "#/definitions/User"
+            }
+        },
         "Signup": {
             "required": ["id", "message"],
             "properties": {
@@ -289,6 +601,12 @@
                 "message": {
                     "type": "string"
                 }
+            }
+        },
+        "AllTaskResponse": {
+            "type": "array",
+            "properties": {
+                "$ref": "#/definitions/Task"
             }
         },
         "Error": {
@@ -310,6 +628,14 @@
                 }
             }
         },
+        "AssignTask":{
+            "required":["assigneeEmail"],
+            "properties":{
+                "assigneeEmail":{
+                    "type":"string"
+                }
+            }
+        },
         "LoginResponse": {
             "required": ["token"],
             "properties": {
@@ -322,6 +648,14 @@
             "required": ["token"],
             "properties": {
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "TaskStatus": {
+            "required": ["status"],
+            "properties": {
+                "status": {
                     "type": "string"
                 }
             }
@@ -502,6 +836,26 @@
             "type": "array",
             "properties": {
                 "$ref": "#/definitions/AllCartProductResponse"
+            }
+        },
+        "Task": {
+            "required": ["title", "description", "priority","dueDate","assignee"],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "assignee":{
+                    "type":"string"
+                }
             }
         }
     }
