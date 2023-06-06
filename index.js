@@ -14,11 +14,11 @@ app.use(cors());
 
 const authRouter = require('./routes/auth_routes');
 const taskRouter = require('./routes/task_routes');
-// const userRouter = require('./routes/user_routes');
+const userRouter = require('./routes/admin_routes');
 
 app.use('/api/auth',authRouter);
 app.use('/api/task',taskRouter);
-// app.use('/api/user',userRouter);
+app.use('/api/admin/user',userRouter);
 
 app.use((req, res, next) => {
   console.log("Hello from middleware");

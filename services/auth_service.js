@@ -21,7 +21,7 @@ exports.login = async(email, inputPassword) => {
     if (!isMatch) {
         throw new Error("Invalid credentials");
     }
-    const token = jwt.sign({ _id: user._id, name: user.name, email: user.email },
+    const token = jwt.sign({ _id: user._id, name: user.name, email: user.email , role:user.role},
         process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: "1d",
         }
@@ -39,7 +39,7 @@ exports.logout = async(id) => {
     user.token = null;
     await User.findOneAndUpdate({ _id: user._id }, { token: "" });
 };
-
+ 
 exports.verifyToken = async(token) => {
     console.log("In Auth verifyToken ");
     const payload = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);

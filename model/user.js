@@ -53,6 +53,11 @@ const UserSchema = new mongoose.Schema({
     emailVerified:{
        type:Boolean,
        default: false 
+    },
+    role:{
+        enum:["Regular", "Admin"],
+        type:String,
+        required:true
     }
 });
 

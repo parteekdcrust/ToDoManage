@@ -2,25 +2,26 @@
     "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
-        "title": "Ecommerce Web app",
-        "description": "Ecommerce Web app API"
+        "title": "ToDo Manager Web app",
+        "description": "ToDo Manager Web app API"
     },
     "servers": [{
         "url": "http://localhost:3000/api",
-        "description": "Ecommerce App"
+        "description": "ToDo Manager"
     }],
-    "tags": [{
-            "name": "Product",
-            "description": "API for products in the system"
-        },
+    "tags": [
         {
             "name": "Auth",
             "description": "API for authorization in the system"
         },
         {
-            "name": "Cart",
-            "description": "API for User's Cart in the system"
-        }
+            "name": "Task",
+            "description": "API for Tasks in the system"
+        },
+        {
+            "name": "User",
+            "description": "API for Users in the system"
+        }        
     ],
     "schemes": ["http"],
     "consumes": ["application/json"],
@@ -146,38 +147,6 @@
                 }
             }
         },
-        "/auth/mobile-otp-verification": {
-            "post": {
-                "tags": ["Auth"],
-                "summary": "Verify mobile through OTP",
-                "description": "Verify mobile through OTP",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/definitions/VerifyMobileInput"
-                            }
-                        }
-                    }
-                },
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "Email verified Succesfully",
-                        "schema": {
-                            "$ref": "#/definitions/LogoutResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Error in mobile verification",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
         "/auth/forgot-password": {
             "post": {
                 "tags": ["Auth"],
@@ -295,7 +264,7 @@
     },
     "definitions": {
         "User": {
-            "required": ["name", "email", "password", "mobile"],
+            "required": ["name", "email", "password","role"],
             "properties": {
                 "name": {
                     "type": "string"
@@ -306,7 +275,7 @@
                 "password": {
                     "type": "string"
                 },
-                "mobile": {
+                "role": {
                     "type": "string"
                 }
             }

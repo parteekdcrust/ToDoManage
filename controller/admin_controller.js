@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-const userService = require('../services/user_service');
+const userService = require('../services/admin_service');
 
-exports.getAllUsers = async(req,res)=>{
+exports.getAllUser = async(req,res)=>{
     try {
-        console.log("inside user controller")
+        if(req.loggedInUser.role != "Admin") throw new Error("User not authorized to get all users details"); 
         const users = await userService.getAllUsers();
         res.status(200).send(users);     
     } catch (error) {
@@ -16,6 +16,7 @@ exports.getAllUsers = async(req,res)=>{
 }
 exports.getUserById = async (req,res)=>{
     try {
+        if(req.loggedInUser.role != "Admin") throw new Error("User not authorized to get all users details");
         const id = req.params.id;
         const user = await userService.getUserById(id);
         res.status(200).send(user);   

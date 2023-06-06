@@ -39,9 +39,9 @@ const sendOtpToEmail = async (email, OTP) => {
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     // console.log(req.body);
-    const user = new User({ name, email, password });
+    const user = new User({ name, email, password, role });
     const _id = await authService.signup(user);
 
     const OTP = generateOtp(); //generating otp

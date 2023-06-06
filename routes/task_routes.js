@@ -4,8 +4,8 @@ const{ createTask, getAllTasks,getTask,deleteTask, assignTask, changeStatus} = r
 const {verifyToken} = require('../controller/auth_controller');
 
 router.route('/').post(verifyToken,createTask);
-router.route('/').get(getAllTasks);
-router.route('/:id').get(getTask);
+router.route('/').get(verifyToken,getAllTasks);
+router.route('/:id').get(verifyToken,getTask);
 router.route('/:id').delete(verifyToken,deleteTask);
 router.route('/assign/:id').post(verifyToken,assignTask );
 router.route('/status/:id').post(verifyToken,changeStatus);
