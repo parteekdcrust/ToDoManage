@@ -5,10 +5,12 @@
         "title": "ToDo Manager Web app",
         "description": "ToDo Manager Web app API"
     },
-    "servers": [{
-        "url": "https://to-do-manage.onrender.com/api",
-        "description": "ToDo Manager"
-    }],
+    "servers": [
+        {
+            "url": "https://to-do-manage.onrender.com/api",
+            "description": "ToDo Manager"
+        }
+    ],
     "tags": [
         {
             "name": "Auth",
@@ -21,15 +23,23 @@
         {
             "name": "User",
             "description": "API for Users in the system"
-        }        
+        }
     ],
-    "schemes": ["http"],
-    "consumes": ["application/json"],
-    "produces": ["application/json"],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
     "paths": {
         "/auth/signup": {
             "post": {
-                "tags": ["Auth"],
+                "tags": [
+                    "Auth"
+                ],
                 "summary": "Sign Up new user in system",
                 "description": "Sign Up new user in system",
                 "requestBody": {
@@ -60,7 +70,9 @@
         },
         "/auth/login": {
             "post": {
-                "tags": ["Auth"],
+                "tags": [
+                    "Auth"
+                ],
                 "summary": "Log in user in system",
                 "description": "Log in user in system",
                 "requestBody": {
@@ -73,7 +85,9 @@
                         }
                     }
                 },
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "User logged in and token generated",
@@ -92,13 +106,19 @@
         },
         "/auth/logout": {
             "post": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["Auth"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Auth"
+                ],
                 "summary": "Logout user from the system",
                 "description": "Logout user from the system",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "User logged in and token generated",
@@ -117,7 +137,9 @@
         },
         "/auth/email-otp-verification": {
             "post": {
-                "tags": ["Auth"],
+                "tags": [
+                    "Auth"
+                ],
                 "summary": "Verify email through OTP",
                 "description": "Verify email through OTP",
                 "requestBody": {
@@ -130,7 +152,9 @@
                         }
                     }
                 },
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Email verified Succesfully",
@@ -149,7 +173,9 @@
         },
         "/auth/forgot-password": {
             "post": {
-                "tags": ["Auth"],
+                "tags": [
+                    "Auth"
+                ],
                 "summary": "get link to reset password",
                 "description": "get link to reset password",
                 "requestBody": {
@@ -162,7 +188,9 @@
                         }
                     }
                 },
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Email verified Succesfully",
@@ -181,7 +209,9 @@
         },
         "/auth/reset-password": {
             "post": {
-                "tags": ["Auth"],
+                "tags": [
+                    "Auth"
+                ],
                 "summary": "reset password",
                 "description": "reset password",
                 "requestBody": {
@@ -194,14 +224,18 @@
                         }
                     }
                 },
-                "parameters": [{
-                    "name": "otp",
-                    "in": "path",
-                    "required": true,
-                    "description": "otp to reset password",
-                    "type": "number"
-                }],
-                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "otp",
+                        "in": "path",
+                        "required": true,
+                        "description": "otp to reset password",
+                        "type": "number"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Password resetted Succesfully",
@@ -220,7 +254,9 @@
         },
         "/auth/change-password": {
             "post": {
-                "tags": ["Auth"],
+                "tags": [
+                    "Auth"
+                ],
                 "summary": "change password",
                 "description": "change password",
                 "requestBody": {
@@ -233,7 +269,9 @@
                         }
                     }
                 },
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Password Changed Succesfully",
@@ -252,10 +290,14 @@
         },
         "/task": {
             "post": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["Task"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Task"
+                ],
                 "summary": "create task",
                 "description": "create task",
                 "requestBody": {
@@ -268,7 +310,9 @@
                         }
                     }
                 },
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "201": {
                         "description": "Task created successfully",
@@ -283,17 +327,21 @@
                         }
                     }
                 }
-            }
-        },
-        "task/": {
+            },
             "get": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["Task"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Task"
+                ],
                 "summary": "get all tasks",
                 "description": "get all tasks",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Task created successfully",
@@ -310,15 +358,21 @@
                 }
             }
         },
-        "task/{id}": {
+        "/task/{id}": {
             "get": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["Task"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Task"
+                ],
                 "summary": "get all tasks",
                 "description": "get all tasks",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -344,13 +398,19 @@
                 }
             },
             "delete": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["Task"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Task"
+                ],
                 "summary": "delete tasks",
                 "description": "delete tasks",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -378,10 +438,14 @@
         },
         "/task/assign/{id}": {
             "post": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["Task"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Task"
+                ],
                 "summary": "assign task",
                 "description": "assign task",
                 "requestBody": {
@@ -403,7 +467,9 @@
                         "type": "string"
                     }
                 ],
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Task created successfully",
@@ -422,10 +488,14 @@
         },
         "/task/status/{id}": {
             "post": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["Task"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Task"
+                ],
                 "summary": "change status of task",
                 "description": "change status of task",
                 "requestBody": {
@@ -447,7 +517,9 @@
                         "type": "string"
                     }
                 ],
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Task status changed successfully",
@@ -466,13 +538,19 @@
         },
         "/admin/user/": {
             "get": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["User"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
                 "summary": "get all users",
                 "description": "get all users",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "Allusers fetched successfully",
@@ -491,13 +569,19 @@
         },
         "/admin/user/{id}": {
             "get": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["User"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
                 "summary": "get a user",
                 "description": "get a user",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -523,13 +607,19 @@
                 }
             },
             "delete": {
-                "security": [{
-                    "bearerAuth": []
-                }],
-                "tags": ["User"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
                 "summary": "delete user",
                 "description": "delete user",
-                "produces": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -555,7 +645,6 @@
                 }
             }
         }
-
     },
     "components": {
         "securitySchemes": {
@@ -570,7 +659,12 @@
     },
     "definitions": {
         "User": {
-            "required": ["name", "email", "password","role"],
+            "required": [
+                "name",
+                "email",
+                "password",
+                "role"
+            ],
             "properties": {
                 "name": {
                     "type": "string"
@@ -593,7 +687,10 @@
             }
         },
         "Signup": {
-            "required": ["id", "message"],
+            "required": [
+                "id",
+                "message"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -610,7 +707,9 @@
             }
         },
         "Error": {
-            "required": ["message"],
+            "required": [
+                "message"
+            ],
             "properties": {
                 "message": {
                     "type": "string"
@@ -618,7 +717,10 @@
             }
         },
         "LoginInput": {
-            "required": ["email", "password"],
+            "required": [
+                "email",
+                "password"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
@@ -628,16 +730,20 @@
                 }
             }
         },
-        "AssignTask":{
-            "required":["assigneeEmail"],
-            "properties":{
-                "assigneeEmail":{
-                    "type":"string"
+        "AssignTask": {
+            "required": [
+                "assigneeEmail"
+            ],
+            "properties": {
+                "assigneeEmail": {
+                    "type": "string"
                 }
             }
         },
         "LoginResponse": {
-            "required": ["token"],
+            "required": [
+                "token"
+            ],
             "properties": {
                 "token": {
                     "type": "string"
@@ -645,7 +751,9 @@
             }
         },
         "LogoutInput": {
-            "required": ["token"],
+            "required": [
+                "token"
+            ],
             "properties": {
                 "token": {
                     "type": "string"
@@ -653,7 +761,9 @@
             }
         },
         "TaskStatus": {
-            "required": ["status"],
+            "required": [
+                "status"
+            ],
             "properties": {
                 "status": {
                     "type": "string"
@@ -661,7 +771,9 @@
             }
         },
         "LogoutResponse": {
-            "required": ["message"],
+            "required": [
+                "message"
+            ],
             "properties": {
                 "message": {
                     "type": "string"
@@ -669,7 +781,10 @@
             }
         },
         "VerifyEmailInput": {
-            "required": ["email", "otp"],
+            "required": [
+                "email",
+                "otp"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
@@ -680,7 +795,10 @@
             }
         },
         "VerifyMobileInput": {
-            "required": ["mobile", "otp"],
+            "required": [
+                "mobile",
+                "otp"
+            ],
             "properties": {
                 "mobile": {
                     "type": "string"
@@ -701,7 +819,9 @@
             }
         },
         "ResetPassInput": {
-            "required": ["password"],
+            "required": [
+                "password"
+            ],
             "properties": {
                 "mobile": {
                     "type": "string"
@@ -715,7 +835,11 @@
             }
         },
         "ChangePassInput": {
-            "required": ["token", "email", "password"],
+            "required": [
+                "token",
+                "email",
+                "password"
+            ],
             "properties": {
                 "token": {
                     "type": "string"
@@ -742,7 +866,14 @@
             }
         },
         "Product": {
-            "required": ["name", "url", "icon", "images", "description", "cost"],
+            "required": [
+                "name",
+                "url",
+                "icon",
+                "images",
+                "description",
+                "cost"
+            ],
             "properties": {
                 "name": {
                     "type": "string"
@@ -792,7 +923,10 @@
             }
         },
         "CartInput": {
-            "required": ["productId", "quantity"],
+            "required": [
+                "productId",
+                "quantity"
+            ],
             "properties": {
                 "productId": {
                     "type": "string"
@@ -839,7 +973,13 @@
             }
         },
         "Task": {
-            "required": ["title", "description", "priority","dueDate","assignee"],
+            "required": [
+                "title",
+                "description",
+                "priority",
+                "dueDate",
+                "assignee"
+            ],
             "properties": {
                 "title": {
                     "type": "string"
@@ -853,8 +993,8 @@
                 "dueDate": {
                     "type": "string"
                 },
-                "assignee":{
-                    "type":"string"
+                "assignee": {
+                    "type": "string"
                 }
             }
         }
