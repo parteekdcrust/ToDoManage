@@ -10,3 +10,8 @@ exports.getAllUsers = async ()=>{
     const users = await User.find();
     return users;
 }
+
+exports.deleteUserById = async (id)=>{
+    const result = await User.findOneAndDelete({_id:id})
+    return result;
+}

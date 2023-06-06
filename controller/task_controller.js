@@ -52,7 +52,7 @@ exports.getTask = async (req, res) => {
     const id = req.params.id;
     const user = req.loggedInUser;
     const task = await taskService.getTask(id);
-    if((user._id.toString() != task.createdBy.toString()) || (user.role != "Admin") ) throw new Error("User not authorized to view the task");
+    if((user._id.toString() != task.createdBy.toString()) && (user.role != "Admin") ) throw new Error("User not authorized to view the task");
     res.status(200).send(task);
   } catch (error) {
     console.log(error);
@@ -67,7 +67,7 @@ exports.deleteTask = async (req, res) => {
     const id = req.params.id;
     const user = req.loggedInUser;
     const task = await taskService.getTask(id);
-    if ((user._id.toString() != task.createdBy.toString()) || (user.role != "Admin") ) {
+    if ((user._id.toString() != task.createdBy.toString()) && (user.role != "Admin") ) {
       throw new Error("User not authorized to delete the task");
     }
     const result = await taskService.deleteTask(id);
@@ -88,7 +88,7 @@ exports.assignTask = async (req, res) => {
     const user = req.loggedInUser;
     const { assigneeEmail } = req.body;
     const task = await taskService.getTask(id);
-    if (user._id.toString() != task.createdBy.toString() || (user._id.toString() != task.assignee.toString())) {
+    if (user._id.toString() != task.createdBy.toString() && (user._id.toString() != task.assignee.toString())) {
       throw new Error("User not authorized to assign the task");
     }
     const result = await taskService.assignTask(id, assigneeEmail);
