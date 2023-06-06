@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Task = require("../model/task");
-const { findOneAndDelete } = require("../model/user");
+// const { findOneAndDelete } = require("../model/user");
 const User = require("../model/user");
 
 exports.createTask = async (task) => {
@@ -21,7 +21,7 @@ exports.getAllTasks = async () => {
 };
 
 exports.deleteTask = async (id) => {
-  const res = await findOneAndDelete({ _id: id });
+  const res = await Task.findOneAndDelete({ _id: id });
   return res;
 };
 
@@ -29,24 +29,51 @@ exports.assignTask = async (id, assigneeEmail) => {
   const task = await Task.findById(id);
   if (!task) throw new Error("Task not found");
   const assignee = await User.findOne({ email: assigneeEmail });
-  console.log(assignee._id);
   if (!assignee) throw new Error("USer  not found");
-  console.log(task.assignee);
   const newTask = await Task.findOneAndUpdate(
     { _id: id },
     { assignee: assignee._id },
     { new: true }
   );
   newTask.save();
-  console.log(task.assignee);
   return newTask;
 };
 
 
-exports.changeStatus = async (id,user,status)=>{
+exports.changeStatus = async (id,status)=>{
     const task = await Task.findById(id);
     if(!task) throw new Error("Task not found");
-
+    let res;
     
+    if(status=="ToDo")
+    {
+        if(task.status=="ToDo")
+        {
+          //update status
+          res = await Task.findOneAndUpdate({_id:id},{status:status},{new:true});
+        }
+        else throw new Error("Invalid Transition") 
+    }
+    else if(status=="In Progress")
+    {
+        if(task.status=="ToDo") 
+        {
+            //update status
+            res = await Task.findOneAndUpdate({_id:id},{status:status},{new:true});
+        }
+        else throw new Error("Invalid Transition")
+    }
+    else if (status=="Done") 
+    {
+        if(task.status=="In Progress") 
+        {
+            //update status
+            res = await Task.findOneAndUpdate({_id:id},{status:status},{new:true});
+        }
+        else throw new Error("Invalid Transition")
+    }
+    await task.save()
+    return task;
+
 
 }

@@ -5,19 +5,21 @@ const taskService = require("../services/task_service");
 const userService = require("../services/user_service");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
+
 exports.createTask = async (req, res) => {
   try {
-    const { title, description, priority, dueDate, createdBy, assignee } =
-      req.body;
+    const user = await userService.getUserById(req.loggedInUser._id);
+    if (!user) throw new Error("Not authenticated user");
+    const { title, description, priority, dueDate, assignee } = req.body;
     const task = new Task({
       title,
       description,
       priority,
       dueDate,
-      createdBy,
       assignee,
+      createdBy: user._id,
     });
-
+    // task.createdBy = user._id;
     const _id = await taskService.createTask(task);
     res.status(201).json({
       _id: _id,
@@ -60,13 +62,11 @@ exports.deleteTask = async (req, res) => {
   try {
     const id = req.params.id;
     const user = req.loggedInUser;
-    console.log(user._id);
     const task = await taskService.getTask(id);
-    console.log(task.createdBy);
-    if (user._id != task.createdBy) {
-      throw new Error("User not authorized");
+    if (user._id.toString() != task.createdBy.toString()) {
+      throw new Error("User not authorized to delete the task");
     }
-    const res = await taskService.deleteTask(id);
+    const result = await taskService.deleteTask(id);
     res.status(200).json({
       message: "Task Deleted Successfully",
     });
@@ -84,7 +84,9 @@ exports.assignTask = async (req, res) => {
     const user = req.loggedInUser;
     const { assigneeEmail } = req.body;
     const task = await taskService.getTask(id);
-    console.log(assigneeEmail);
+    if (user._id.toString() != task.createdBy.toString()) {
+      throw new Error("User not authorized to assign the task");
+    }
     const result = await taskService.assignTask(id, assigneeEmail);
 
     //sending notification via email to assignee about task assignmnent
@@ -115,15 +117,19 @@ exports.assignTask = async (req, res) => {
   }
 };
 
-exports.changeStatus = async(req, res) => {
+exports.changeStatus = async (req, res) => {
   try {
+    const availableStatus = ["ToDo", "In Progress", "Done"];
     const id = req.params.id;
+    const task = await taskService.getTask(id);
     const user = req.loggedInUser;
+    if(task.assignee.toString() != user._id.toString() ) throw new Error("User not authorized to change status");
     const status = req.body.status;
-    const result =  await taskService.changeStatus(id,user,status);
+    if (!availableStatus.includes(status)) throw new Error("Invalid Status");
+    const result = await taskService.changeStatus(id, status);
     res.status(200).json({
-        message: "Task Status changed successfully"
-    })
+      message: "Task Status changed successfully",
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({
