@@ -118,7 +118,7 @@ exports.verifyOtpByEmail = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    await User.updateOne({ email: email }, { emailVerified: true });
+    await User.updateOne({ email: email }, { emailVerified: true, isActive:true });
     await Otp.deleteOne({ email: email });
 
     return res.status(200).json({
@@ -146,7 +146,7 @@ exports.resetPassword = async (req, res) => {
     await user.save();
 
     res.status(200).json({
-      message: "Password has been reset !",
+      message: "Password Reset Successfully"
     });
   } catch (error) {
     console.log(error);
@@ -180,7 +180,7 @@ exports.forgotPassword = async (req, res) => {
       from: `"Message from TodoManager" <process.env.AUTH_EMAIL>`, // sender address
       to: email, // list of receivers
       subject: "Reset Link for password", // Subject line
-      html: `<p>This is your link for reset password: <a href="http://localhost:3000/api/auth/reset-password?otp=${OTP}">Reset you password</a></p>`, // html body
+      html: `<p>This is your link for reset password: <a href="http://to-do-manage.onrender.com/api/auth/reset-password?otp=${OTP}">Reset you password</a></p>`, // html body
     });
 
     res.status(200).json({
@@ -196,11 +196,11 @@ exports.forgotPassword = async (req, res) => {
 };
 
 exports.changePassword = async (req, res) => {
-  const { token, oldPassword, newPassword } = req.body;
-
   try {
-    const user = await authService.changePassword(
-      token,
+    const { oldPassword, newPassword } = req.body;
+    const user = req.loggedInUser;
+    const result = await authService.changePassword(
+      user,
       oldPassword,
       newPassword
     );
@@ -211,4 +211,17 @@ exports.changePassword = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+exports.authorize = (roles) => {
+  return (req, res, next) => {
+    const user = req.loggedInUser;
+    if (roles.includes(user.role)) {
+      next();
+    } else {
+      res.status(403).json({
+        message: "User not Authorized !"
+      })
+    }
+  };
 };

@@ -48,7 +48,7 @@ const UserSchema = new mongoose.Schema({
     },
     isActive: {
         type: Boolean,
-        default: true,
+        default: false,
     },
     emailVerified:{
        type:Boolean,
@@ -72,8 +72,8 @@ const hashPassword = async(password) => {
     return await bcrypt.hash(password, salt);
 };
 
-UserSchema.methods.comparePassword = async function(password) {
-    return bcrypt.compare(password, this.password);
-};
+// UserSchema.methods.comparePassword = async function(password) {
+//     return bcrypt.compare(password, this.password);
+// };
 
 module.exports = mongoose.model("User", UserSchema);

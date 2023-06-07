@@ -61,24 +61,15 @@ exports.saveOtpToDB = async(otp) => {
     console.log("OTP saved successfully to DB");
 };
 
-exports.changePassword = async(token, oldPassword, newPassword) => {
-        const user = await User.findOne({ token: token });
-        console.log(user);
-
-        if (!user) {
-            throw new Error("Invalid token");
-        }
-
+exports.changePassword = async(user, oldPassword, newPassword) => {
         // Compare the old password
-        const isMatch = await user.comparePassword(oldPassword);
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
 
         if (!isMatch) {
             throw new Error("Invalid old password");
         }
-
         // Update the user's password
         user.password = newPassword;
-
         await user.save();
         return user;
 };

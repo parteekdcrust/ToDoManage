@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Task = require("../model/task");
-// const { findOneAndDelete } = require("../model/user");
 const User = require("../model/user");
 
 exports.createTask = async (task) => {
@@ -14,41 +13,56 @@ exports.getTask = async (id) => {
   return task;
 };
 
-exports.getAllTasks = async () => {
-  const tasks = await Task.find();
+exports.getAllTasks = async (user) => {
+  let tasks;
+  if (user.role == "Admin") tasks = await Task.find();
+  else if (user.role == "Regular")
+    tasks = await Task.find({ createdBy: user._id });
   if (!tasks) throw new Error("Tasks not found");
   return tasks;
 };
 
-exports.deleteTask = async (id) => {
-  const res = await Task.findOneAndDelete({ _id: id });
+exports.deleteTask = async (task, user) => {
+  let res;
+  if (user.role == "Admin")
+    res = await Task.findOneAndDelete({ _id: task._id });
+  else if (user.role == "Regular") {
+    if (task.createdBy == user._id)
+      res = await Task.findOneAndDelete({ _id: task._id });
+    else throw new Error("User not authorized !");
+  }
   return res;
 };
 
-exports.assignTask = async (id, assigneeEmail) => {
-  const task = await Task.findById(id);
-  if (!task) throw new Error("Task not found");
+exports.assignTask = async (user, task, assigneeEmail) => {
+  if (
+    user._id.toString() != task.createdBy.toString() &&
+    user._id.toString() != task.assignee.toString()
+  ) {
+    throw new Error("User not authorized to assign the task");
+  }
   const assignee = await User.findOne({ email: assigneeEmail });
-  if (!assignee) throw new Error("USer  not found");
+  if (!assignee) throw new Error("Assignee not found");
   const newTask = await Task.findOneAndUpdate(
-    { _id: id },
+    { _id: task._id },
     { assignee: assignee._id },
-    { new: true, upsert: true }
+    { new: true }
   );
   newTask.save();
   return newTask;
 };
 
-exports.changeStatus = async (id, status) => {
-  const task = await Task.findById(id);
-  if (!task) throw new Error("Task not found");
+exports.changeStatus = async (status, user, task) => {
+  const availableStatus = ["ToDo", "In Progress", "Done"];
+  if (task.assignee.toString() != user._id.toString())
+    throw new Error("User not authorized to change status");
+  if (!availableStatus.includes(status)) throw new Error("Invalid Status");
   let res;
-
   if (status == "ToDo") {
     if (task.status == "ToDo") {
       //update status
       res = await Task.findOneAndUpdate(
-        { _id: id },
+        { _id: task._id },
         { status: status },
         { new: true }
       );
@@ -57,7 +71,7 @@ exports.changeStatus = async (id, status) => {
     if (task.status == "ToDo") {
       //update status
       res = await Task.findOneAndUpdate(
-        { _id: id },
+        { _id: task._id },
         { status: status },
         { new: true }
       );
@@ -66,7 +80,7 @@ exports.changeStatus = async (id, status) => {
     if (task.status == "In Progress") {
       //update status
       res = await Task.findOneAndUpdate(
-        { _id: id },
+        { _id: task._id },
         { status: status },
         { new: true }
       );
