@@ -2,60 +2,30 @@ const mongoose = require("mongoose");
 const User = require("../model/user");
 const Otp = require("../model/otp");
 const authService = require("../services/auth_service");
-const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
-const otpGenerator = require("otp-generator");
-require('dotenv').config();
-
-const generateOtp = () => {
-  const OTP = otpGenerator.generate(6, {
-    number: true,
-    upperCaseAlphabets: false,
-    lowerCaseAlphabets: false,
-    specialChars: false,
-  });
-  console.log(OTP);
-  return OTP;
-};
-
-const sendOtpToEmail = async (email, OTP) => {
-  const transporter = nodemailer.createTransport({
-    // connect with the smtp
-    service: "gmail",
-    auth: {
-      user: process.env.AUTH_EMAIL,
-      pass: process.env.AUTH_PASS,
-    },
-  });
-
-  await transporter.sendMail({
-    from: `"Message from TodoManager" <process.env.AUTH_EMAIL>`, // sender address
-    to: email, // list of receivers
-    subject: "OTP Verifictaion", // Subject line
-    html: `<b>This is your OTP: ${OTP} for verification.The OTP will expires in 5 mins </b>`, // html body
-  });
-  return;
-};
+const { generateOtp } = require("../config/generate_otp");
+const { sendOtpToEmail } = require("../config/send_email");
+require("dotenv").config();
 
 exports.signup = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-    // console.log(req.body);
     const user = new User({ name, email, password, role });
     const _id = await authService.signup(user);
 
     const OTP = generateOtp(); //generating otp
-    await sendOtpToEmail(email, OTP); //sending otp to email
+    const html = `<b>This is your OTP: ${OTP} for verification.The OTP will expires in 5 mins </b>`;
+    await sendOtpToEmail(email, html); //sending otp to email
 
     const otp = new Otp({ email: email, otp: OTP }); //making new record in otp collection
     await authService.saveOtpToDB(otp);
 
     res.status(201).json({
       id: _id,
-      message: "OTP sent Successfully on your registered email. Please Verify",
+      message:
+        "User signed-up and OTP sent Successfully on your registered email. Please Verify",
     });
   } catch (error) {
-    console.log("error in user post ", error);
+    console.log(error);
     res.status(400).send({ message: error.message });
   }
 };
@@ -75,9 +45,9 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    let loggedInUser = req.loggedInUser;
+    let user = req.loggedInUser;
 
-    await authService.logout(loggedInUser._id);
+    await authService.logout(user._id);
     res.status(200).send({ message: "Logged out successfully" });
   } catch (error) {
     console.log("error in user post ", error);
@@ -108,24 +78,12 @@ exports.verifyToken = async (req, res, next) => {
 exports.verifyOtpByEmail = async (req, res) => {
   try {
     const { email, otp } = req.body;
-    const otpHolder = await Otp.findOne({ email });
-    if (!otpHolder) {
-      return res.status(400).json({ message: "OTP not found" });
-    }
-
-    const isOtpValid = await bcrypt.compare(otp, otpHolder.otp);
-    if (!isOtpValid) {
-      return res.status(400).json({ message: "Invalid OTP" });
-    }
-
-    await User.updateOne({ email: email }, { emailVerified: true, isActive:true });
-    await Otp.deleteOne({ email: email });
-
+    const result = await authService.verifyOtpByEmail(email, otp);
     return res.status(200).json({
       message: "Email verified Succesfully",
     });
   } catch (error) {
-    console.log("Error in verifying OTP ", error);
+    console.log(error);
     res.status(400).send({ message: error.message });
   }
 };
@@ -133,20 +91,10 @@ exports.verifyOtpByEmail = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    let otp = await Otp.findOne({ email: email });
-    let user = await User.findOne({ email: email });
-
-    if (!otp) throw new Error("The link has been expired !");
-
-    const isOtpValid = await bcrypt.compare(req.query.otp, otp.otp);
-    if (!isOtpValid) throw new Error("The link is Invalid !");
-
-    await Otp.deleteOne({ email: email });
-    user.password = req.body.password;
-    await user.save();
-
+    const otp = req.query.otp;
+    const result = await authService.resetPassword(email, otp);
     res.status(200).json({
-      message: "Password Reset Successfully"
+      message: "Password Reset Successfully",
     });
   } catch (error) {
     console.log(error);
@@ -160,28 +108,12 @@ exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const OTP = generateOtp();
-
-    let user = await User.findOne({ email: email });
-    if (!user) throw new Error("User not found with this email !");
-
     const otp = new Otp({ email: email, otp: OTP }); //making new record in otp collection
     await authService.saveOtpToDB(otp);
-
-    const transporter = nodemailer.createTransport({
-      // connect with the smtp
-      service: "gmail",
-      auth: {
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: `"Message from TodoManager" <process.env.AUTH_EMAIL>`, // sender address
-      to: email, // list of receivers
-      subject: "Reset Link for password", // Subject line
-      html: `<p>This is your link for reset password: <a href="http://to-do-manage.onrender.com/api/auth/reset-password?otp=${OTP}">Reset you password</a></p>`, // html body
-    });
+    const result = await authService.forgotPassword(email);
+    
+    const html = `<p>This is your link for reset password: <a href="http://to-do-manage.onrender.com/api/auth/reset-password?otp=${OTP}">Reset you password</a></p>` // html body
+    await sendOtpToEmail(email, html); //sending link to email
 
     res.status(200).json({
       message:
@@ -220,8 +152,8 @@ exports.authorize = (roles) => {
       next();
     } else {
       res.status(403).json({
-        message: "User not Authorized !"
-      })
+        message: "User not Authorized !",
+      });
     }
   };
 };

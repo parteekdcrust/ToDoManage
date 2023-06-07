@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../model/user');
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const Otp = require("../model/otp");
 
 exports.signup = async (user)=>{
     const result = await user.save();
@@ -73,3 +74,39 @@ exports.changePassword = async(user, oldPassword, newPassword) => {
         await user.save();
         return user;
 };
+
+exports.verifyOtpByEmail = async (email,otp) =>{
+    const otpHolder = await Otp.findOne({ email });
+    if (!otpHolder) {
+      throw new Error("OTP not found");
+    }
+    const isOtpValid = await bcrypt.compare(otp, otpHolder.otp);
+    if (!isOtpValid) {
+      throw new Error("Invalid OTP" );
+    }
+    const user = await User.updateOne({ email: email }, { emailVerified: true, isActive:true });
+    await Otp.deleteOne({ email: email });
+    return user;
+};
+
+exports.resetPassword = async (email,otp)=>{
+    let otpHolder = await Otp.findOne({ email: email });
+    let user = await User.findOne({ email: email });
+
+    if (!otpHolder) throw new Error("The link has been expired !");
+
+    const isOtpValid = await bcrypt.compare(otp, otpHolder.otp);
+    if (!isOtpValid) throw new Error("The link is Invalid !");
+
+    await Otp.deleteOne({ email: email });
+    user.password = req.body.password;
+    await user.save();
+    return user;
+}
+
+exports.forgotPassword = async (email)=>{
+    let user = await User.findOne({ email: email });
+    if (!user) throw new Error("User not found with this email !");
+    return user;
+    
+}
