@@ -33,47 +33,45 @@ exports.assignTask = async (id, assigneeEmail) => {
   const newTask = await Task.findOneAndUpdate(
     { _id: id },
     { assignee: assignee._id },
-    { new: true }
+    { new: true, upsert: true }
   );
   newTask.save();
   return newTask;
 };
 
+exports.changeStatus = async (id, status) => {
+  const task = await Task.findById(id);
+  if (!task) throw new Error("Task not found");
+  let res;
 
-exports.changeStatus = async (id,status)=>{
-    const task = await Task.findById(id);
-    if(!task) throw new Error("Task not found");
-    let res;
-    
-    if(status=="ToDo")
-    {
-        if(task.status=="ToDo")
-        {
-          //update status
-          res = await Task.findOneAndUpdate({_id:id},{status:status},{new:true});
-        }
-        else throw new Error("Invalid Transition") 
-    }
-    else if(status=="In Progress")
-    {
-        if(task.status=="ToDo") 
-        {
-            //update status
-            res = await Task.findOneAndUpdate({_id:id},{status:status},{new:true});
-        }
-        else throw new Error("Invalid Transition")
-    }
-    else if (status=="Done") 
-    {
-        if(task.status=="In Progress") 
-        {
-            //update status
-            res = await Task.findOneAndUpdate({_id:id},{status:status},{new:true});
-        }
-        else throw new Error("Invalid Transition")
-    }
-    await task.save()
-    return task;
-
-
-}
+  if (status == "ToDo") {
+    if (task.status == "ToDo") {
+      //update status
+      res = await Task.findOneAndUpdate(
+        { _id: id },
+        { status: status },
+        { new: true }
+      );
+    } else throw new Error("Invalid Transition");
+  } else if (status == "In Progress") {
+    if (task.status == "ToDo") {
+      //update status
+      res = await Task.findOneAndUpdate(
+        { _id: id },
+        { status: status },
+        { new: true }
+      );
+    } else throw new Error("Invalid Transition");
+  } else if (status == "Done") {
+    if (task.status == "In Progress") {
+      //update status
+      res = await Task.findOneAndUpdate(
+        { _id: id },
+        { status: status },
+        { new: true }
+      );
+    } else throw new Error("Invalid Transition");
+  }
+  await task.save();
+  return task;
+};

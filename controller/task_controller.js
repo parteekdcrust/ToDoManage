@@ -10,13 +10,12 @@ exports.createTask = async (req, res) => {
   try {
     const user = await userService.getUserById(req.loggedInUser._id);
     if (!user) throw new Error("Not authenticated user");
-    const { title, description, priority, dueDate, assignee } = req.body;
+    const { title, description, priority, dueDate } = req.body;
     const task = new Task({
       title,
       description,
       priority,
       dueDate,
-      assignee,
       createdBy: user._id,
     });
     // task.createdBy = user._id;

@@ -977,8 +977,7 @@
                 "title",
                 "description",
                 "priority",
-                "dueDate",
-                "assignee"
+                "dueDate"
             ],
             "properties": {
                 "title": {
