@@ -125,6 +125,7 @@ exports.changeStatus = async (req, res) => {
     const availableStatus = ["ToDo", "In Progress", "Done"];
     const id = req.params.id;
     const task = await taskService.getTask(id);
+    if(!task) throw new Error("task not found",id);
     const user = req.loggedInUser;
     if(task.assignee.toString() != user._id.toString() ) throw new Error("User not authorized to change status");
     const status = req.body.status;
