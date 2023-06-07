@@ -121,7 +121,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "User logged in and token generated",
+                        "description": "User logged out successfully",
                         "schema": {
                             "$ref": "#/definitions/LogoutResponse"
                         }
@@ -199,7 +199,7 @@
                         }
                     },
                     "400": {
-                        "description": "Error in mobile verification",
+                        "description": "Error in sending reset link",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         }
@@ -208,7 +208,7 @@
             }
         },
         "/auth/reset-password": {
-            "post": {
+            "get": {
                 "tags": [
                     "Auth"
                 ],
@@ -254,6 +254,11 @@
         },
         "/auth/change-password": {
             "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Auth"
                 ],
@@ -422,13 +427,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Task fetched successfully",
+                        "description": "Task deleted successfully",
                         "schema": {
                             "$ref": "#/definitions/LogoutResponse"
                         }
                     },
                     "400": {
-                        "description": "Error in fetching tasks",
+                        "description": "Error in deleting tasks",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         }
@@ -631,7 +636,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "user deleted successfully",
+                        "description": "user had become In-Active",
                         "schema": {
                             "$ref": "#/definitions/LogoutResponse"
                         }
@@ -810,9 +815,6 @@
         },
         "ForgotPassInput": {
             "properties": {
-                "mobile": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 }
@@ -820,12 +822,9 @@
         },
         "ResetPassInput": {
             "required": [
-                "password"
+                "password","email"
             ],
             "properties": {
-                "mobile": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
@@ -836,140 +835,16 @@
         },
         "ChangePassInput": {
             "required": [
-                "token",
                 "email",
                 "password"
             ],
             "properties": {
-                "token": {
+                "oldPassword": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string"
-                },
-                "password": {
+                "newPassword": {
                     "type": "string"
                 }
-            }
-        },
-        "Reviews": {
-            "properties": {
-                "user": {
-                    "type": "string"
-                },
-                "comment": {
-                    "type": "string"
-                },
-                "rating": {
-                    "type": "number"
-                }
-            }
-        },
-        "Product": {
-            "required": [
-                "name",
-                "url",
-                "icon",
-                "images",
-                "description",
-                "cost"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "string"
-                },
-                "images": {
-                    "type": "array",
-                    "properties": {
-                        "type": "string"
-                    }
-                },
-                "reviews": {
-                    "type": "array",
-                    "properties": {
-                        "$ref": "#/definitions/Reviews"
-                    }
-                },
-                "category": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "cost": {
-                    "type": "number"
-                },
-                "countInStocks": {
-                    "type": "number"
-                },
-                "rating": {
-                    "type": "number"
-                },
-                "numReviews": {
-                    "type": "number"
-                },
-                "createdOn": {
-                    "type": "string"
-                },
-                "createdBy": {
-                    "type": "string"
-                }
-            }
-        },
-        "CartInput": {
-            "required": [
-                "productId",
-                "quantity"
-            ],
-            "properties": {
-                "productId": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "number"
-                }
-            }
-        },
-        "AllCartProductResponse": {
-            "type": "array",
-            "properties": {
-                "productId": {
-                    "type": "object",
-                    "$ref": "#/definitions/Product"
-                },
-                "quantity": {
-                    "type": "number"
-                }
-            }
-        },
-        "CartTotalResponse": {
-            "properties": {
-                "total": {
-                    "type": "number"
-                }
-            }
-        },
-        "AllProductResponse": {
-            "type": "array",
-            "properties": {
-                "$ref": "#/definitions/Product"
-            }
-        },
-        "ProductResponse": {
-            "properties": {
-                "$ref": "#/definitions/Product"
-            }
-        },
-        "AllReviewsResponse": {
-            "type": "array",
-            "properties": {
-                "$ref": "#/definitions/AllCartProductResponse"
             }
         },
         "Task": {
