@@ -7,10 +7,16 @@ exports.createTask = async (task) => {
   return result._id;
 };
 
-exports.getTask = async (id) => {
-  const task = await Task.findById(id);
+exports.getTask = async (id,user) => {
+  let task;
+  task =await Task.findById(id);
   if (!task) throw new Error("Task not found");
-  return task;
+  if(user.role == "Admin" ) return task;
+  else if (user.role == "Regular") 
+  {
+    if(task.createdBy.toString() == user._id.toString() || task.assignee.toString() == user._id.toString()) return task; 
+  }
+  throw new Error("User not Authorized to get the task");
 };
 
 exports.getAllTasks = async (user, priority,status) => {

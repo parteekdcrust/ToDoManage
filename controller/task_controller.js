@@ -48,8 +48,9 @@ exports.getAllTasks = async (req, res) => {
 
 exports.getTask = async (req, res) => {
   try {
+    const user = req.loggedInUser;
     const id = req.params.id;
-    const task = await taskService.getTask(id);
+    const task = await taskService.getTask(id,user);
     res.status(200).send(task);
   } catch (error) {
     console.log(error);
@@ -63,7 +64,7 @@ exports.deleteTask = async (req, res) => {
   try {
     const id = req.params.id;
     const user = req.loggedInUser;
-    const task = await taskService.getTask(id);
+    const task = await taskService.getTask(id,user);
     const result = await taskService.deleteTask(task,user);
     res.status(200).json({
       message: "Task Deleted Successfully",
@@ -81,7 +82,7 @@ exports.assignTask = async (req, res) => {
     const id = req.params.id;
     const user = req.loggedInUser;
     const { assigneeEmail } = req.body;
-    const task = await taskService.getTask(id);
+    const task = await taskService.getTask(id,user);
     const result = await taskService.assignTask(user ,task, assigneeEmail);
     const html = `<p>You have been assigned a task by ${user.name} and the link to the task is <a href="https://to-do-manage.onrender.com/api/auth/task/${id}">Assigned Task</a></p>` // html body
     // const html=  `<b>You are assigned a task with ${id} taskId</b>` // html body;
@@ -101,7 +102,7 @@ exports.changeStatus = async (req, res) => {
   try {
     const id = req.params.id;
     const user = req.loggedInUser;
-    const task = await taskService.getTask(id);
+    const task = await taskService.getTask(id,user);
     const status = req.body.status;
     const result = await taskService.changeStatus(status,user,task);
     res.status(200).json({
