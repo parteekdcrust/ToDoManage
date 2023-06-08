@@ -207,7 +207,7 @@
                 }
             }
         },
-        "/auth/reset-password": {
+        "/auth/reset-password/{id}/{token}": {
             "post": {
                 "tags": [
                     "Auth"
@@ -216,10 +216,17 @@
                 "description": "Reset password",
                 "parameters": [
                     {
-                        "name": "otp",
-                        "in": "query",
+                        "name": "id",
+                        "in": "path",
                         "required":true,
-                        "description": "otp to reset password",
+                        "description": "id of user",
+                        "type": "string"
+                    },
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required":true,
+                        "description": "token generated",
                         "type": "string"
                     }
                 ],
@@ -233,6 +240,44 @@
                     }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Password Resetted Succesfully",
+                        "schema": {
+                            "$ref": "#/definitions/LogoutResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in resetting password",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset password",
+                "description": "Reset password",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required":true,
+                        "description": "id of user",
+                        "type": "string"
+                    },
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required":true,
+                        "description": "token generated",
+                        "type": "string"
+                    }
+
+                ],
                 "responses": {
                     "200": {
                         "description": "Password Resetted Succesfully",
@@ -833,12 +878,9 @@
         },
         "ResetPassInput": {
             "required": [
-                "password","email"
+                "password"
             ],
             "properties": {
-                "email": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string"
                 }
