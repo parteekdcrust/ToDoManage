@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
         immutable: true,
         validate: {
             validator: function(email) {
-                var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                var re = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
                 return re.test(email);
             },
             message: (props) => `${props.value} is not a valid email! `,

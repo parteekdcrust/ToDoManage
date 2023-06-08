@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../model/user");
-
+const logger = require('../config/logger');
 exports.getUserById = async (id) => {
   const user = await User.findById(id);
   if (!user) throw new Error("No User found !");

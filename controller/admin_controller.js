@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const userService = require("../services/admin_service");
+const logger = require('../config/logger'); 
 
 exports.getAllUser = async (req, res) => {
   try {
     const users = await userService.getAllUsers();
     res.status(200).send(users);
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -18,7 +19,7 @@ exports.getUserById = async (req, res) => {
     const user = await userService.getUserById(id);
     res.status(200).send(user);
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -34,7 +35,7 @@ exports.deleteUserById = async (req, res) => {
       message: "User had become Inactive",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });

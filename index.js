@@ -11,6 +11,7 @@ const swaggerUi = require('swagger-ui-express');
 swaggerDocument = require(`./swagger.json`);
 const cors = require('cors');
 app.use(cors());
+const logger = require('./config/logger');
 
 const authRouter = require('./routes/auth_routes');
 const taskRouter = require('./routes/task_routes');
@@ -21,20 +22,20 @@ app.use('/api/task',taskRouter);
 app.use('/api/admin/user',userRouter);
 
 app.use((req, res, next) => {
-  console.log("Hello from middleware");
+  logger.info("Hello from middleware");
   next();
 });
 process.on("SIGINT", () => {
   disconnectDB();
-  console.log("Closing server");
+  logger.info("Closing server");
   process.exit();
 });
 
 process.on("exit", () => {
-  console.log("Server closed");
+  logger.info("Server closed");
 });
 app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerDocument));
 
 app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+  logger.info(`Server is listening on port ${port}`);
 });

@@ -4,6 +4,7 @@ const Task = require("../model/task");
 const taskService = require("../services/task_service");
 const userService = require("../services/admin_service");
 const { sendEmail } = require('../config/send_email');
+const logger = require('../config/logger');
 require("dotenv").config();
 
 exports.createTask = async (req, res) => {
@@ -25,7 +26,7 @@ exports.createTask = async (req, res) => {
       message: "Task created successfully",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -39,7 +40,7 @@ exports.getAllTasks = async (req, res) => {
     const tasks = await taskService.getAllTasks(user,priority,status);
     res.status(200).send(tasks);
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -53,7 +54,7 @@ exports.getTask = async (req, res) => {
     const task = await taskService.getTask(id,user);
     res.status(200).send(task);
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -70,7 +71,7 @@ exports.deleteTask = async (req, res) => {
       message: "Task Deleted Successfully",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -91,7 +92,7 @@ exports.assignTask = async (req, res) => {
       message: "Task assigned successfully",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -109,7 +110,7 @@ exports.changeStatus = async (req, res) => {
       message: "Task Status changed successfully",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });

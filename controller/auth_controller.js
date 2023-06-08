@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../model/user");
 const Otp = require("../model/otp");
 const jwt = require("jsonwebtoken");
+const logger = require('../config/logger');
 
 const authService = require("../services/auth_service");
 const { generateOtp } = require("../config/generate_otp");
@@ -27,7 +28,7 @@ exports.signup = async (req, res) => {
         "User signed-up and OTP sent Successfully on your registered email. Please Verify",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).send({ message: error.message });
   }
 };
@@ -40,7 +41,7 @@ exports.login = async (req, res) => {
 
     res.status(200).send({ token: token });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).send({ message: error.message });
   }
 };
@@ -52,7 +53,7 @@ exports.logout = async (req, res) => {
     await authService.logout(user._id);
     res.status(200).send({ message: "Logged out successfully" });
   } catch (error) {
-    console.log("error in user post ", error);
+    logger.error(error);
     res.status(400).send({ message: error.message });
   }
 };
@@ -66,13 +67,13 @@ exports.verifyToken = async (req, res, next) => {
     const token = authHeader.split(" ")[1];
     if (!token)
       throw new Error({ message: "Access Denied. Please send Token" });
-    console.log("token " + token);
+    logger.info("token " + token);
 
     const user = await authService.verifyToken(token);
     req.loggedInUser = user;
     next();
   } catch (error) {
-    console.log("error in user post ", error);
+    logger.info( error);
     res.status(400).send({ message: error.message });
   }
 };
@@ -85,7 +86,7 @@ exports.verifyOtpByEmail = async (req, res) => {
       message: "Email verified Succesfully",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).send({ message: error.message });
   }
 };
@@ -94,12 +95,12 @@ exports.getResetPassword = async (req, res) => {
   try {
     const {id,token} = req.params;
     const verify = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
-    console.log(verify);
+    logger.info(verify);
     res.status(200).json({
       message: "Link is verified. Now set new password",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -115,7 +116,7 @@ exports.postResetPassword = async (req, res) => {
       message: "Password has been reset",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -127,7 +128,7 @@ exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
     const [id,token] = await authService.forgotPassword(email);
     const html = `<p>This is your link for reset password: <a href="https://to-do-manage.onrender.com/api/auth/reset-password/${id}/${token}">Reset you password</a></p>` // html body
-    console.log(html);
+    logger.info(html);
     await sendEmail(email, html); //sending link to email
 
     res.status(200).json({
@@ -135,7 +136,7 @@ exports.forgotPassword = async (req, res) => {
         "Link has been sent to email. Please open the link and reset the password",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });
@@ -153,7 +154,7 @@ exports.changePassword = async (req, res) => {
     );
     res.status(200).json({ message: "Password changed successfully" });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(400).json({
       message: error.message,
     });

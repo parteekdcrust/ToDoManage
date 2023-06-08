@@ -1,5 +1,5 @@
 const otpGenerator = require("otp-generator");
-
+const logger = require('./logger');
 exports.generateOtp = () => {
     const OTP = otpGenerator.generate(6, {
       number: true,
@@ -7,6 +7,6 @@ exports.generateOtp = () => {
       lowerCaseAlphabets: false,
       specialChars: false,
     });
-    console.log(OTP);
+    logger.info(OTP);
     return OTP;
 };

@@ -1,21 +1,22 @@
 const mongoose = require("mongoose");
 require('dotenv').config();
+const logger = require('./logger');
 const initDB = () => {
     mongoose
         .connect(process.env.MONGO_URI, {
             useNewUrlParser: true
         })
         .then(() => {
-            console.log("Database connected successfully");
+            logger.info("Database connected successfully");
         })
         .catch((error) => {
-            console.log(error);
+            logger.error(error);
         });
 };
 
 const disconnectDB = () => {
     mongoose.disconnect();
-    console.log("Database disconnected successfully");
+    logger.info("Database disconnected successfully");
 };
 
 module.exports = { initDB, disconnectDB };

@@ -4,7 +4,6 @@ const TaskSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        unique: true,
         validate: {
             validator: function(v) {
                 return /^[a-zA-Z0-9 ]*$/.test(v);

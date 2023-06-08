@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Task = require("../model/task");
 const User = require("../model/user");
+const logger = require('../config/logger');
 
 exports.createTask = async (task) => {
   const result = await task.save();
