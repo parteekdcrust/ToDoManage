@@ -83,8 +83,8 @@ exports.assignTask = async (req, res) => {
     const { assigneeEmail } = req.body;
     const task = await taskService.getTask(id);
     const result = await taskService.assignTask(user ,task, assigneeEmail);
-
-    const html=  `<b>You are assigned a task with ${id} taskId</b>` // html body;
+    const html = `<p>You have been assigned a task by ${user.name} and the link to the task is <a href="https://to-do-manage.onrender.com/api/auth/task/${id}">Assigned Task</a></p>` // html body
+    // const html=  `<b>You are assigned a task with ${id} taskId</b>` // html body;
     await sendEmail(assigneeEmail,html);
     res.status(200).json({
       message: "Task assigned successfully",
