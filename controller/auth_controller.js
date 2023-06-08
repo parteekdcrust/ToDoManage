@@ -93,9 +93,6 @@ exports.verifyOtpByEmail = async (req, res) => {
 exports.getResetPassword = async (req, res) => {
   try {
     const {id,token} = req.params;
-    // const result = await authService.resetPassword(otp);
-    console.log(id);
-    console.log(token);
     const verify = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
     console.log(verify);
     res.status(200).json({
@@ -112,8 +109,6 @@ exports.getResetPassword = async (req, res) => {
 exports.postResetPassword = async (req, res) => {
   try {
     const {id,token} = req.params;
-    console.log(id);
-    console.log(token);
     const {password} = req.body;
     const result = await authService.resetPassword(id,password);
     res.status(200).json({
