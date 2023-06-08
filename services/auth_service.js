@@ -89,24 +89,39 @@ exports.verifyOtpByEmail = async (email,otp) =>{
     return user;
 };
 
-exports.resetPassword = async (email,otp)=>{
-    let otpHolder = await Otp.findOne({ email: email });
-    let user = await User.findOne({ email: email });
-
-    if (!otpHolder) throw new Error("The link has been expired !");
-
-    const isOtpValid = await bcrypt.compare(otp, otpHolder.otp);
-    if (!isOtpValid) throw new Error("The link is Invalid !");
-
-    await Otp.deleteOne({ email: email });
-    user.password = req.body.password;
-    await user.save();
-    return user;
+exports.resetPassword = async (id, password)=>{
+    const user = await User.findById(id);
+    if(!user) throw new Error("User not found");
+    
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(password, salt);
+    const newUser = await User.updateOne({_id:id},{password:encryptedPassword},{new:true});
+    return newUser;
 }
+// exports.resetPassword = async (email,otp,password)=>{
+//     let otpHolder = await Otp.findOne({ email: email });
+//     let user = await User.findOne({ email: email });
+
+//     if (!otpHolder) throw new Error("The link has been expired !");
+
+//     const isOtpValid = await bcrypt.compare(otp, otpHolder.otp);
+//     if (!isOtpValid) throw new Error("The link is Invalid !");
+
+//     await Otp.deleteOne({ email: email });
+//     user.password = password;
+//     await user.save();
+//     return user;
+// }
 
 exports.forgotPassword = async (email)=>{
     let user = await User.findOne({ email: email });
     if (!user) throw new Error("User not found with this email !");
-    return user;
+
+    const token = jwt.sign({ _id: user._id, email: user.email},
+        process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: "5m",
+        }
+    ); 
+    return [user._id,token];
     
 }

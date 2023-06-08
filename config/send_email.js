@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 
-exports.sendOtpToEmail = async (email, html) => {
+exports.sendEmail = async (email, html) => {
     const transporter = nodemailer.createTransport({
       // connect with the smtp
       service: "gmail",

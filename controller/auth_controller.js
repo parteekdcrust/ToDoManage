@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const User = require("../model/user");
 const Otp = require("../model/otp");
+const jwt = require("jsonwebtoken");
+
 const authService = require("../services/auth_service");
 const { generateOtp } = require("../config/generate_otp");
-const { sendOtpToEmail } = require("../config/send_email");
+const { sendEmail } = require("../config/send_email");
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
@@ -14,7 +16,7 @@ exports.signup = async (req, res) => {
 
     const OTP = generateOtp(); //generating otp
     const html = `<b>This is your OTP: ${OTP} for verification.The OTP will expires in 5 mins </b>`;
-    await sendOtpToEmail(email, html); //sending otp to email
+    await sendEmail(email, html); //sending otp to email
 
     const otp = new Otp({ email: email, otp: OTP }); //making new record in otp collection
     await authService.saveOtpToDB(otp);
@@ -88,13 +90,34 @@ exports.verifyOtpByEmail = async (req, res) => {
   }
 };
 
-exports.resetPassword = async (req, res) => {
+exports.getResetPassword = async (req, res) => {
   try {
-    const { email } = req.body;
-    const otp = req.query.otp;
-    const result = await authService.resetPassword(email, otp);
+    const {id,token} = req.params;
+    // const result = await authService.resetPassword(otp);
+    console.log(id);
+    console.log(token);
+    const verify = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
+    console.log(verify);
     res.status(200).json({
-      message: "Password Reset Successfully",
+      message: "Link is verified. Now set new password",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+exports.postResetPassword = async (req, res) => {
+  try {
+    const {id,token} = req.params;
+    console.log(id);
+    console.log(token);
+    const {password} = req.body;
+    const result = await authService.resetPassword(id,password);
+    res.status(200).json({
+      message: "Password has been reset",
     });
   } catch (error) {
     console.log(error);
@@ -107,13 +130,10 @@ exports.resetPassword = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    const OTP = generateOtp();
-    const otp = new Otp({ email: email, otp: OTP }); //making new record in otp collection
-    await authService.saveOtpToDB(otp);
-    const result = await authService.forgotPassword(email);
-    
-    const html = `<p>This is your link for reset password: <a href="http://to-do-manage.onrender.com/api/auth/reset-password?otp=${OTP}">Reset you password</a></p>` // html body
-    await sendOtpToEmail(email, html); //sending link to email
+    const [id,token] = await authService.forgotPassword(email);
+    const html = `<p>This is your link for reset password: <a href="https://to-do-manage.onrender.com/api/auth/reset-password/${id}/${token}">Reset you password</a></p>` // html body
+    console.log(html);
+    await sendEmail(email, html); //sending link to email
 
     res.status(200).json({
       message:

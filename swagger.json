@@ -208,37 +208,34 @@
             }
         },
         "/auth/reset-password": {
-            "get": {
+            "post": {
                 "tags": [
                     "Auth"
                 ],
-                "summary": "reset password",
-                "description": "reset password",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/definitions/ResetPassInput"
-                            }
-                        }
-                    }
-                },
+                "summary": "Reset password",
+                "description": "Reset password",
                 "parameters": [
                     {
                         "name": "otp",
                         "in": "query",
-                        "required": true,
+                        "required":true,
                         "description": "otp to reset password",
-                        "type": "number"
+                        "type": "string"
                     }
                 ],
-                "produces": [
-                    "application/json"
-                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/definitions/ResetPassInput"
+                        }
+                    }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Password resetted Succesfully",
+                        "description": "Password Resetted Succesfully",
                         "schema": {
                             "$ref": "#/definitions/LogoutResponse"
                         }
@@ -351,14 +348,12 @@
                     {
                         "name": "priority",
                         "in": "query",
-                        "required":"false",
                         "description": "priority of tasks to be fetched",
                         "type": "string"
                     },
                     {
                         "name": "status",
                         "in": "query",
-                        "required":"false",
                         "description": "status of tasks to be fetched",
                         "type": "string"
                     }
