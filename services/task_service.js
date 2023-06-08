@@ -13,11 +13,30 @@ exports.getTask = async (id) => {
   return task;
 };
 
-exports.getAllTasks = async (user) => {
+exports.getAllTasks = async (user, priority,status) => {
   let tasks;
-  if (user.role == "Admin") tasks = await Task.find();
-  else if (user.role == "Regular")
-    tasks = await Task.find({ createdBy: user._id });
+  if (priority && status) {
+    if (user.role == "Admin") tasks = await Task.find({ priority: priority, status:status });
+    else if (user.role == "Regular")
+      tasks = await Task.find({ priority: priority, createdBy: user._id,status:status  });
+  } 
+  else if (priority)
+  {
+    if (user.role == "Admin") tasks = await Task.find({ priority: priority});
+    else if (user.role == "Regular")
+      tasks = await Task.find({ priority: priority, createdBy: user._id });
+  }
+  else if (status) 
+  {
+    if (user.role == "Admin") tasks = await Task.find({ status:status });
+    else if (user.role == "Regular")
+      tasks = await Task.find({createdBy: user._id,status:status  });
+  }
+  else {
+    if (user.role == "Admin") tasks = await Task.find();
+    else if (user.role == "Regular")
+      tasks = await Task.find({ createdBy: user._id });
+  }
   if (!tasks) throw new Error("Tasks not found");
   return tasks;
 };

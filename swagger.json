@@ -227,7 +227,7 @@
                 "parameters": [
                     {
                         "name": "otp",
-                        "in": "path",
+                        "in": "query",
                         "required": true,
                         "description": "otp to reset password",
                         "type": "number"
@@ -346,6 +346,22 @@
                 "description": "get all tasks",
                 "produces": [
                     "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "priority",
+                        "in": "query",
+                        "required":"false",
+                        "description": "priority of tasks to be fetched",
+                        "type": "string"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required":"false",
+                        "description": "status of tasks to be fetched",
+                        "type": "string"
+                    }
                 ],
                 "responses": {
                     "200": {

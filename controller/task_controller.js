@@ -34,8 +34,9 @@ exports.createTask = async (req, res) => {
 
 exports.getAllTasks = async (req, res) => {
   try {
+    const {priority, status} = req.query;
     const user = req.loggedInUser;
-    const tasks = await taskService.getAllTasks(user);
+    const tasks = await taskService.getAllTasks(user,priority,status);
     res.status(200).send(tasks);
   } catch (error) {
     console.log(error);
