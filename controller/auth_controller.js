@@ -29,7 +29,7 @@ exports.signup = async (req, res) => {
     });
   } catch (error) {
     logger.error(error);
-    res.status(400).send({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -39,10 +39,10 @@ exports.login = async (req, res) => {
 
     const token = await authService.login(email, inputPassword);
 
-    res.status(200).send({ token: token });
+    res.status(200).json({ token: token });
   } catch (error) {
     logger.error(error);
-    res.status(400).send({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -51,10 +51,10 @@ exports.logout = async (req, res) => {
     let user = req.loggedInUser;
 
     await authService.logout(user._id);
-    res.status(200).send({ message: "Logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     logger.error(error);
-    res.status(400).send({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -73,8 +73,8 @@ exports.verifyToken = async (req, res, next) => {
     req.loggedInUser = user;
     next();
   } catch (error) {
-    logger.info( error);
-    res.status(400).send({ message: error.message });
+    logger.error( error);
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -87,7 +87,7 @@ exports.verifyOtpByEmail = async (req, res) => {
     });
   } catch (error) {
     logger.error(error);
-    res.status(400).send({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 

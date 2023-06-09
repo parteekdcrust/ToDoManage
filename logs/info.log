@@ -80,3 +80,42 @@
 [2023-06-08 11:43:14.391 PM] info: 	In Auth verifyToken 
 [2023-06-08 11:43:14.747 PM] info: 	In Auth logout 
 [2023-06-08 11:44:07.087 PM] info: 	Database disconnected successfully
+[2023-06-09 11:11:01.469 AM] info: 	Server is listening on port 3000
+[2023-06-09 11:11:03.762 AM] info: 	Database connected successfully
+[2023-06-09 12:01:44.074 PM] info: 	Server is listening on port 3000
+[2023-06-09 12:01:46.414 PM] info: 	Database connected successfully
+[2023-06-09 12:02:52.465 PM] info: 	In Auth login  
+[2023-06-09 12:02:52.705 PM] error: 	User not found
+[2023-06-09 12:03:14.332 PM] info: 	In Auth login  
+[2023-06-09 12:03:14.671 PM] error: 	Invalid credentials
+[2023-06-09 12:05:34.279 PM] info: 	Server is listening on port 3000
+[2023-06-09 12:05:37.716 PM] info: 	Database connected successfully
+[2023-06-09 12:06:05.375 PM] info: 	In Auth login  
+[2023-06-09 12:06:05.640 PM] error: 	User not found
+[2023-06-09 12:10:00.334 PM] info: 	In Auth login  
+[2023-06-09 12:10:00.648 PM] error: 	Invalid credentials
+[2023-06-09 12:10:04.500 PM] info: 	In Auth login  
+[2023-06-09 12:10:04.878 PM] info: 	token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkYjk1MTJlN2MzZTkzMDc5NjNhM2IiLCJpYXQiOjE2ODYyOTI4MDQsImV4cCI6MTY4NjM3OTIwNH0.5JvzWJe_TNrHwtz2EYHPgHsa9Pa4bHy0g9f1I7AqTPg
+[2023-06-09 12:10:29.438 PM] info: 	token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkYjk1MTJlN2MzZTkzMDc5NjNhM2IiLCJpYXQiOjE2ODYyOTI4MDQsImV4cCI6MTY4NjM3OTIwNH0.5JvzWJe_TNrHwtz2EYHPgHsa9Pa4bHy0g9f1I7AqTPg
+[2023-06-09 12:10:29.440 PM] info: 	In Auth verifyToken 
+[2023-06-09 12:10:29.679 PM] info: 	In Auth logout 
+[2023-06-09 12:11:11.755 PM] info: 	Server is listening on port 3000
+[2023-06-09 12:11:14.086 PM] info: 	Database connected successfully
+[2023-06-09 12:11:20.250 PM] info: 	In Auth login  
+[2023-06-09 12:11:20.601 PM] info: 	token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkYjk1MTJlN2MzZTkzMDc5NjNhM2IiLCJpYXQiOjE2ODYyOTI4ODAsImV4cCI6MTY4NjM3OTI4MH0.eFrGjq-bt2Ta1Di0iIZAXdSfW-6bgWwIEhEP-x40K8w
+[2023-06-09 12:11:34.110 PM] info: 	token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkYjk1MTJlN2MzZTkzMDc5NjNhM2IiLCJpYXQiOjE2ODYyOTI4MDQsImV4cCI6MTY4NjM3OTIwNH0.5JvzWJe_TNrHwtz2EYHPgHsa9Pa4bHy0g9f1I7AqTPg
+[2023-06-09 12:11:34.112 PM] info: 	In Auth verifyToken 
+[2023-06-09 12:11:34.348 PM] error: 	Access Denied. please login
+[2023-06-09 12:11:42.602 PM] info: 	token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkYjk1MTJlN2MzZTkzMDc5NjNhM2IiLCJpYXQiOjE2ODYyOTI4ODAsImV4cCI6MTY4NjM3OTI4MH0.eFrGjq-bt2Ta1Di0iIZAXdSfW-6bgWwIEhEP-x40K8w
+[2023-06-09 12:11:42.603 PM] info: 	In Auth verifyToken 
+[2023-06-09 12:11:42.864 PM] info: 	In Auth logout 
+[2023-06-09 12:12:11.190 PM] info: 	Server is listening on port 3000
+[2023-06-09 12:12:17.038 PM] info: 	In Auth login  
+[2023-06-09 12:12:17.547 PM] info: 	Database connected successfully
+[2023-06-09 12:12:18.097 PM] info: 	token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkYjk1MTJlN2MzZTkzMDc5NjNhM2IiLCJpYXQiOjE2ODYyOTI5MzgsImV4cCI6MTY4NjM3OTMzOH0.UDG3YQBcohSMr8Npgaa1hockIrnTJwTMNCZMaWe-dJw
+[2023-06-09 12:12:35.431 PM] info: 	token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkYjk1MTJlN2MzZTkzMDc5NjNhM2IiLCJpYXQiOjE2ODYyOTI5MzgsImV4cCI6MTY4NjM3OTMzOH0.UDG3YQBcohSMr8Npgaa1hockIrnTJwTMNCZMaWe-dJw
+[2023-06-09 12:12:35.432 PM] info: 	In Auth verifyToken 
+[2023-06-09 12:12:35.660 PM] info: 	In Auth logout 
+[2023-06-09 12:13:12.359 PM] info: 	Server is listening on port 3000
+[2023-06-09 12:13:14.523 PM] info: 	Database connected successfully
+[2023-06-09 12:13:38.780 PM] info: 	Database disconnected successfully

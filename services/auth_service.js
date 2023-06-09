@@ -42,6 +42,7 @@ exports.logout = async (id) => {
 exports.verifyToken = async (token) => {
   logger.info("In Auth verifyToken ");
   const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  console.log(payload);
   const user = await User.findOne({ _id: payload._id, isActive: true });
   if (!user) {
     throw new Error("User not found or deactivated");
