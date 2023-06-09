@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "https://to-do-manage.onrender.com/api",
+            "url": "https://to-do-manager-app.onrender.com/api",
             "description": "ToDo Manager"
         }
     ],
